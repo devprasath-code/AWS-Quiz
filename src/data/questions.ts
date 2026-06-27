@@ -1,0 +1,111 @@
+import { Question } from "../types";
+
+export const QUESTION_BANK: Question[] = [
+  // Compute
+  { c: "Compute", q: "What does AWS EC2 stand for?", options: ["Elastic Cloud Compute", "Elastic Compute Cloud", "Extended Cloud Computing", "Enterprise Cloud Cluster"], ans: 1 },
+  { c: "Compute", q: "Which EC2 pricing model gives the highest discount for steady, long-term workloads?", options: ["On-Demand", "Spot Instances", "Reserved Instances", "Dedicated Hosts"], ans: 2 },
+  { c: "Compute", q: "Which EC2 pricing model offers the lowest cost but can be interrupted by AWS?", options: ["Reserved", "Spot Instances", "On-Demand", "Savings Plans"], ans: 1 },
+  { c: "Compute", q: "What is Amazon Lightsail designed for?", options: ["Big data analytics", "Simple, low-cost virtual servers for small workloads", "Container orchestration", "Global DNS routing"], ans: 1 },
+  { c: "Compute", q: "Which AWS service automatically adjusts EC2 capacity based on demand?", options: ["Elastic Load Balancer", "Auto Scaling", "CloudFormation", "Systems Manager"], ans: 1 },
+  { c: "Compute", q: "What is an EC2 AMI?", options: ["A billing report", "A preconfigured template used to launch instances", "A monitoring dashboard", "A security policy"], ans: 1 },
+  { c: "Compute", q: "Which EC2 instance type family is optimized for compute-intensive workloads?", options: ["T-series", "C-series", "R-series", "D-series"], ans: 1 },
+  { c: "Compute", q: "What happens to data on an instance store volume when the EC2 instance stops?", options: ["It persists indefinitely", "It is lost", "It moves to S3 automatically", "It is archived to Glacier"], ans: 1 },
+  { c: "Compute", q: "Which service lets you run code without provisioning or managing servers?", options: ["EC2", "Lambda", "Lightsail", "Elastic Beanstalk"], ans: 1 },
+  { c: "Compute", q: "What is the purpose of an EC2 Placement Group?", options: ["To group billing accounts", "To influence how instances are placed on underlying hardware", "To manage IAM roles", "To schedule backups"], ans: 1 },
+
+  // Storage
+  { c: "Storage", q: "Which AWS service provides scalable object storage?", options: ["EBS", "EFS", "S3", "Storage Gateway"], ans: 2 },
+  { c: "Storage", q: "What is the default storage class in Amazon S3?", options: ["S3 Glacier", "S3 Standard-IA", "S3 Standard", "S3 One Zone-IA"], ans: 2 },
+  { c: "Storage", q: "Which EBS volume type is best suited for high-performance workloads needing high IOPS?", options: ["Cold HDD", "Throughput Optimized HDD", "Provisioned IOPS SSD", "General Purpose SSD"], ans: 2 },
+  { c: "Storage", q: "Which AWS storage service offers scalable, shared file storage for use with EC2?", options: ["Elastic File System", "Glacier", "Snowball", "Storage Gateway"], ans: 0 },
+  { c: "Storage", q: "Which service connects on-premises storage with AWS cloud storage as a hybrid solution?", options: ["Storage Gateway", "Direct Connect", "Transit Gateway", "DataSync"], ans: 0 },
+  { c: "Storage", q: "Which S3 Glacier retrieval option is fastest but most expensive?", options: ["Bulk", "Standard", "Expedited", "Deferred"], ans: 2 },
+  { c: "Storage", q: "Which S3 feature automatically moves objects between storage classes based on rules?", options: ["Versioning", "Lifecycle policy", "Replication", "Transfer Acceleration"], ans: 1 },
+  { c: "Storage", q: "Which S3 feature keeps multiple variants of an object to protect against accidental deletion?", options: ["Lifecycle policy", "Versioning", "Encryption", "Object Lock"], ans: 1 },
+  { c: "Storage", q: "Which AWS service is used for large-scale offline data transfer into AWS using physical devices?", options: ["Snowball", "Kinesis", "DataSync", "Storage Gateway"], ans: 0 },
+  { c: "Storage", q: "Which S3 feature speeds up uploads over long distances using edge locations?", options: ["Cross-Region Replication", "Transfer Acceleration", "Multipart Upload", "Lifecycle Policy"], ans: 1 },
+
+  // Database
+  { c: "Database", q: "What AWS service is a managed relational database?", options: ["DynamoDB", "ElastiCache", "RDS", "Redshift"], ans: 2 },
+  { c: "Database", q: "Which AWS service is a fully managed NoSQL database with single-digit millisecond latency?", options: ["RDS", "Aurora", "DynamoDB", "Redshift"], ans: 2 },
+  { c: "Database", q: "What is Amazon Aurora?", options: ["A NoSQL key-value store", "A MySQL/PostgreSQL-compatible relational database built for the cloud", "A caching engine", "A data warehouse"], ans: 1 },
+  { c: "Database", q: "Which RDS feature provides high availability via a standby replica in another Availability Zone?", options: ["Read Replica", "Multi-AZ deployment", "Auto Scaling", "Snapshot Export"], ans: 1 },
+  { c: "Database", q: "What is Amazon Redshift primarily used for?", options: ["Caching", "Object storage", "Data warehousing and analytics", "Container orchestration"], ans: 2 },
+  { c: "Database", q: "Which AWS service provides an in-memory caching layer for databases?", options: ["ElastiCache", "DynamoDB Accelerator", "Both A and B", "Aurora"], ans: 2 },
+  { c: "Database", q: "What AWS service helps migrate databases to AWS with minimal downtime?", options: ["Database Migration Service", "Storage Gateway", "Snowball", "DataSync"], ans: 0 },
+  { c: "Database", q: "Which AWS database service is designed for highly connected graph data?", options: ["Neptune", "DocumentDB", "Timestream", "QLDB"], ans: 0 },
+  { c: "Database", q: "Which AWS database service is compatible with MongoDB workloads?", options: ["Neptune", "DocumentDB", "Aurora", "Redshift"], ans: 1 },
+  { c: "Database", q: "What is the default automated backup retention period for Amazon RDS?", options: ["1 day", "7 days", "30 days", "90 days"], ans: 1 },
+
+  // Networking
+  { c: "Networking", q: "What is an Availability Zone in AWS?", options: ["A geographic region", "An isolated data center cluster within a region", "A global CDN point", "A virtual network segment"], ans: 1 },
+  { c: "Networking", q: "Which AWS service is used to manage DNS?", options: ["CloudFront", "Route 53", "Direct Connect", "API Gateway"], ans: 1 },
+  { c: "Networking", q: "Which AWS service provides a dedicated private network connection to AWS?", options: ["VPN Gateway", "Direct Connect", "Transit Gateway", "PrivateLink"], ans: 1 },
+  { c: "Networking", q: "What is the purpose of an Internet Gateway in a VPC?", options: ["Connect two VPCs", "Allow internet access for VPC resources", "Filter traffic by port", "Load balance requests"], ans: 1 },
+  { c: "Networking", q: "Which load balancer operates at Layer 7 (HTTP/HTTPS)?", options: ["Network Load Balancer", "Classic Load Balancer", "Application Load Balancer", "Gateway Load Balancer"], ans: 2 },
+  { c: "Networking", q: "What is a Network ACL used for in a VPC?", options: ["Routing DNS", "Stateless traffic filtering at the subnet level", "Load balancing", "Caching content"], ans: 1 },
+  { c: "Networking", q: "What does a NAT Gateway allow?", options: ["Inbound internet traffic to private subnets", "Outbound internet access for private subnet resources", "Cross-VPC routing", "DNS resolution"], ans: 1 },
+  { c: "Networking", q: "Which AWS service provides global content delivery (CDN)?", options: ["Route 53", "CloudFront", "Elastic Load Balancer", "API Gateway"], ans: 1 },
+  { c: "Networking", q: "Which AWS service connects multiple VPCs and on-premises networks through a central hub?", options: ["VPC Peering", "Transit Gateway", "Direct Connect", "PrivateLink"], ans: 1 },
+  { c: "Networking", q: "What is the typical CIDR range assigned to a default AWS VPC?", options: ["10.0.0.0/8", "172.31.0.0/16", "192.168.0.0/24", "10.0.0.0/16"], ans: 1 },
+
+  // Security & IAM
+  { c: "Security", q: "What does IAM stand for?", options: ["Identity and Access Management", "Internet Access Manager", "Integrated Application Module", "Identity Authorization Method"], ans: 0 },
+  { c: "Security", q: "Which AWS service provides managed DDoS protection?", options: ["WAF", "Shield", "GuardDuty", "Inspector"], ans: 1 },
+  { c: "Security", q: "What does the principle of least privilege mean?", options: ["Grant maximum access to all users", "Grant only the permissions necessary to perform a task", "Never grant any access", "Rotate credentials daily"], ans: 1 },
+  { c: "Security", q: "Which service continuously monitors for malicious or unauthorized account activity?", options: ["Inspector", "GuardDuty", "Macie", "Shield"], ans: 1 },
+  { c: "Security", q: "What is an IAM Role?", options: ["A permanent user account", "An identity with temporary permissions that can be assumed", "A billing profile", "A type of security group"], ans: 1 },
+  { c: "Security", q: "What does MFA stand for in AWS account security?", options: ["Multi-Factor Authentication", "Managed File Access", "Multiple Function Application", "Monitored Feature Access"], ans: 0 },
+  { c: "Security", q: "Which IAM policy type is attached directly to a single user?", options: ["Resource-based policy", "Service control policy", "Inline policy", "Permission boundary"], ans: 2 },
+  { c: "Security", q: "Which AWS service manages encryption keys for data at rest?", options: ["KMS", "ACM", "Secrets Manager", "IAM"], ans: 0 },
+  { c: "Security", q: "Which service automatically discovers and protects sensitive data like PII in S3?", options: ["GuardDuty", "Macie", "Inspector", "Detective"], ans: 1 },
+  { c: "Security", q: "Which AWS service issues and manages SSL/TLS certificates?", options: ["KMS", "Secrets Manager", "ACM", "IAM"], ans: 2 },
+
+  // Containers & Serverless
+  { c: "Serverless", q: "What is AWS Lambda?", options: ["A container orchestration service", "A serverless compute service that runs code on demand", "A managed EC2 fleet", "A batch processing service"], ans: 1 },
+  { c: "Serverless", q: "What is the maximum execution timeout for a single AWS Lambda invocation?", options: ["5 minutes", "10 minutes", "15 minutes", "30 minutes"], ans: 2 },
+  { c: "Serverless", q: "Which service is AWS's managed Kubernetes offering?", options: ["ECS", "EKS", "Fargate", "ECR"], ans: 1 },
+  { c: "Serverless", q: "What does Amazon ECR stand for?", options: ["Elastic Container Registry", "Elastic Cloud Runtime", "Enterprise Container Repository", "Elastic Compute Resource"], ans: 0 },
+  { c: "Serverless", q: "Which AWS service runs containers without provisioning or managing servers?", options: ["ECS on EC2", "EKS on EC2", "AWS Fargate", "AWS Batch"], ans: 2 },
+  { c: "Serverless", q: "Which service is used to build and publish serverless REST or HTTP APIs?", options: ["ALB", "NLB", "API Gateway", "CloudFront"], ans: 2 },
+  { c: "Serverless", q: "What is AWS Step Functions primarily used for?", options: ["Storing container images", "Orchestrating multi-step distributed workflows", "Running scheduled batch jobs", "Managing DNS records"], ans: 1 },
+  { c: "Serverless", q: "Which messaging services can trigger a Lambda function asynchronously?", options: ["SQS only", "SNS only", "Both SQS and SNS", "Neither"], ans: 2 },
+  { c: "Serverless", q: "What does SAM stand for in AWS serverless development?", options: ["Serverless Application Model", "Secure Access Management", "Service Architecture Module", "Scalable App Manager"], ans: 0 },
+  { c: "Serverless", q: "Which AWS CLI tool lets you define cloud infrastructure using TypeScript, Python, or Java?", options: ["CloudFormation", "AWS CDK", "SAM CLI", "OpsWorks"], ans: 1 },
+
+  // Monitoring & Management
+  { c: "Monitoring", q: "Which AWS service collects metrics, logs, and events from AWS resources?", options: ["CloudTrail", "CloudWatch", "Config", "Trusted Advisor"], ans: 1 },
+  { c: "Monitoring", q: "Which AWS service records API calls made within an account for auditing?", options: ["CloudWatch", "CloudTrail", "Config", "X-Ray"], ans: 1 },
+  { c: "Monitoring", q: "Which service evaluates AWS resource configurations against a desired state?", options: ["CloudTrail", "AWS Config", "Trusted Advisor", "Systems Manager"], ans: 1 },
+  { c: "Monitoring", q: "Which service provides recommendations on cost, security, and performance best practices?", options: ["Trusted Advisor", "GuardDuty", "Inspector", "CloudWatch"], ans: 0 },
+  { c: "Monitoring", q: "Which service automates operational tasks across EC2 and on-premises servers?", options: ["Systems Manager", "OpsWorks", "CloudFormation", "CodeDeploy"], ans: 0 },
+  { c: "Monitoring", q: "Which AWS service helps trace and debug requests across distributed applications?", options: ["CloudWatch", "X-Ray", "CloudTrail", "Config"], ans: 1 },
+  { c: "Monitoring", q: "Which service allows centralized management of multiple AWS accounts?", options: ["IAM", "AWS Organizations", "Control Tower", "Resource Groups"], ans: 1 },
+  { c: "Monitoring", q: "Which service helps set up and govern a secure, multi-account AWS environment?", options: ["Organizations", "Control Tower", "Service Catalog", "Config"], ans: 1 },
+  { c: "Monitoring", q: "Which dashboard alerts you to AWS service issues that may affect your resources?", options: ["CloudWatch Dashboard", "AWS Health Dashboard", "Trusted Advisor", "Compute Optimizer"], ans: 1 },
+  { c: "Monitoring", q: "Which service provides recommendations to right-size compute resources?", options: ["Trusted Advisor", "Compute Optimizer", "Cost Explorer", "Budgets"], ans: 1 },
+
+  // DevOps & Deployment
+  { c: "DevOps", q: "Which AWS service automates code deployments to compute services?", options: ["CodeBuild", "CodeDeploy", "CodePipeline", "CodeCommit"], ans: 1 },
+  { c: "DevOps", q: "Which AWS service orchestrates an end-to-end continuous delivery pipeline?", options: ["CodeDeploy", "CodeBuild", "CodePipeline", "CodeStar"], ans: 2 },
+  { c: "DevOps", q: "Which AWS service compiles source code and runs tests to produce build artifacts?", options: ["CodeDeploy", "CodeBuild", "CodePipeline", "CodeCommit"], ans: 1 },
+  { c: "DevOps", q: "Which service lets you model and provision AWS infrastructure as code using templates?", options: ["OpsWorks", "CloudFormation", "Elastic Beanstalk", "Service Catalog"], ans: 1 },
+  { c: "DevOps", q: "Which AWS service uses Chef and Puppet for server configuration management?", options: ["OpsWorks", "Systems Manager", "CloudFormation", "CodeDeploy"], ans: 0 },
+  { c: "DevOps", q: "Which service lets you deploy and manage web apps without manually provisioning infrastructure?", options: ["Lightsail", "Elastic Beanstalk", "Lambda", "ECS"], ans: 1 },
+  { c: "DevOps", q: "Which AWS service is a fully managed Git-based source control service?", options: ["CodeCommit", "CodeBuild", "CodePipeline", "CodeArtifact"], ans: 0 },
+  { c: "DevOps", q: "Which AWS service provides a unified dashboard to manage software development activities?", options: ["CodeStar", "CodePipeline", "Cloud9", "CodeArtifact"], ans: 0 },
+  { c: "DevOps", q: "Which cloud-based IDE does AWS offer for writing, running, and debugging code?", options: ["Cloud9", "CodeStar", "CodeWhisperer", "CodeArtifact"], ans: 0 },
+  { c: "DevOps", q: "Which AWS service hosts private software packages and dependencies for build pipelines?", options: ["CodeArtifact", "CodeCommit", "ECR", "S3"], ans: 0 },
+
+  // Analytics & ML
+  { c: "Analytics", q: "Which AWS service lets you run SQL queries directly on data stored in S3?", options: ["Redshift", "Athena", "EMR", "Glue"], ans: 1 },
+  { c: "Analytics", q: "Which AWS service is used for real-time data streaming and ingestion?", options: ["Kinesis", "SQS", "SNS", "EventBridge"], ans: 0 },
+  { c: "Analytics", q: "Which AWS service provides managed Hadoop and Spark big-data processing?", options: ["Athena", "EMR", "Glue", "QuickSight"], ans: 1 },
+  { c: "Analytics", q: "Which AWS service is a fully managed platform to build, train, and deploy ML models?", options: ["Comprehend", "Rekognition", "SageMaker", "Lex"], ans: 2 },
+  { c: "Analytics", q: "Which AWS service is used for business intelligence dashboards and visualizations?", options: ["QuickSight", "Athena", "Glue", "EMR"], ans: 0 },
+  { c: "Analytics", q: "Which AWS service is a fully managed ETL (extract, transform, load) service?", options: ["Glue", "Data Pipeline", "EMR", "Lake Formation"], ans: 0 },
+  { c: "Analytics", q: "Which feature lets Redshift query data directly in S3 without loading it first?", options: ["Redshift Spectrum", "Athena Federation", "Glue Crawler", "Data Sharing"], ans: 0 },
+  { c: "Analytics", q: "Which AWS service helps build a centralized, secure, access-controlled data lake?", options: ["Lake Formation", "Glue", "S3 Analytics", "Redshift"], ans: 0 },
+  { c: "Analytics", q: "Which AWS service provides natural language processing for text analysis?", options: ["Comprehend", "Rekognition", "Polly", "Translate"], ans: 0 },
+  { c: "Analytics", q: "Which AWS service provides image and video analysis using deep learning?", options: ["Comprehend", "Rekognition", "Textract", "Lex"], ans: 1 },
+];

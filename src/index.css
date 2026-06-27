@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora", var(--font-sans);
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-aws-orange: #FF9900;
+  --color-aws-navy: #16213e;
+  --color-aws-ink: #0b1220;
+  
+  --shadow-glow: 0 0 20px rgba(255, 153, 0, 0.15);
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.04);
+}
+
+@layer base {
+  body {
+    @apply bg-[#f8fafc] text-[#334155] antialiased selection:bg-orange-100 selection:text-orange-900;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  
+  h1, h2, h3, h4 {
+    @apply font-display text-aws-ink tracking-tight;
+  }
+}
+
+@layer components {
+  /* ── Status dot (connection) ── */
+  .conn-dot {
+    @apply fixed top-6 right-6 flex items-center gap-2 bg-white/80 backdrop-blur-md border border-white rounded-full px-4 py-2 text-[11px] font-bold text-slate-500 shadow-sm z-[500] font-mono transition-all hover:shadow-md;
+  }
+  .conn-dot .dot { @apply w-2 h-2 rounded-full bg-emerald-500 animate-pulse; }
+  .conn-dot.err .dot { @apply bg-rose-500 animate-none; }
+
+  /* ── Timer Ring ── */
+  .timer-ring { @apply relative w-[72px] h-[72px] shrink-0; }
+  .timer-ring svg { @apply -rotate-90 w-[72px] h-[72px] drop-shadow-sm; }
+  .timer-ring .track { @apply fill-none stroke-slate-100 stroke-[6]; }
+  .timer-ring .fill { @apply fill-none stroke-[6] transition-[stroke-dashoffset] duration-1000 ease-linear; stroke-linecap: round; }
+  .timer-ring .timer-num { @apply absolute inset-0 flex items-center justify-center font-mono text-xl font-extrabold; }
+
+  /* ── Badges ── */
+  .badge-status {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest font-mono border;
+  }
+  .badge-status.pending { @apply bg-slate-50 text-slate-400 border-slate-100; }
+  .badge-status.admitted { @apply bg-indigo-50 text-indigo-600 border-indigo-100; }
+  .badge-status.active { @apply bg-orange-50 text-orange-700 border-orange-100; }
+  .badge-status.completed { @apply bg-emerald-50 text-emerald-700 border-emerald-100; }
+  .badge-status.terminated { @apply bg-rose-50 text-rose-600 border-rose-100; }
+}
