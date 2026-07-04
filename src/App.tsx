@@ -55,6 +55,10 @@ export default function App() {
   const [adminSettings, setAdminSettings] = useState<AdminSettings>({ quizLive: false });
   const [showStartModal, setShowStartModal] = useState(false);
 
+  // Cross-tab sync: when a participant registers in one tab,
+  // the admin panel in another tab gets notified immediately
+  const channelRef = useRef<BroadcastChannel | null>(null);
+
   // admin
   const [adminPass, setAdminPass] = useState("");
   const [adminErr, setAdminErr] = useState("");
@@ -69,6 +73,10 @@ export default function App() {
   const violationsRef = useRef(0);
   const participantRef = useRef<Participant | null>(null);
   participantRef.current = participant;
+  // Stable ref to beginQuiz so polling closure never goes stale
+  const beginQuizRef = useRef<(record: Participant, resume?: boolean) => void>(() => {});
+  // Guard to prevent double-starting the quiz from polling
+  const admissionStartedRef = useRef(false);
 
   // Anti-cheat
   useEffect(() => {
@@ -131,6 +139,7 @@ export default function App() {
   // Polling for admission
   useEffect(() => {
     if (screen !== "waiting") return;
+    admissionStartedRef.current = false; // reset guard when entering waiting screen
     let active = true;
     const poll = async () => {
       const settings = await loadAdminSettings();
@@ -147,21 +156,50 @@ export default function App() {
         return;
       }
       
-      if (settings.quizLive || (rec && rec.status === "admitted")) {
+      // Admit: either quiz is globally live, or this participant was individually admitted
+      if ((settings.quizLive || (rec && rec.status === "admitted")) && !admissionStartedRef.current) {
+        admissionStartedRef.current = true;
         const updated = rec || p;
-        beginQuiz(updated);
+        // Use the ref so we always call the latest version of beginQuiz
+        beginQuizRef.current(updated);
       }
     };
     poll();
-    const id = setInterval(poll, 4000);
+    const id = setInterval(poll, 3000);
     return () => { active = false; clearInterval(id); };
   }, [screen]);
 
-  // Admin polling
+  // Cross-tab communication for instant sync
+  useEffect(() => {
+    // BroadcastChannel for same-origin tabs
+    try {
+      const bc = new BroadcastChannel("aws-quiz-sync");
+      channelRef.current = bc;
+      bc.onmessage = () => {
+        if (screen === "admin") loadParticipants();
+      };
+    } catch { /* BroadcastChannel not available */ }
+
+    // localStorage 'storage' event fires when *another* tab writes
+    const onStorage = (e: StorageEvent) => {
+      if (e.key && e.key.startsWith("participant:") && screen === "admin") {
+        loadParticipants();
+      }
+    };
+    window.addEventListener("storage", onStorage);
+
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      channelRef.current?.close();
+      channelRef.current = null;
+    };
+  }, [screen]);
+
+  // Admin polling (reduced from 15s → 3s for faster list updates)
   useEffect(() => {
     if (screen !== "admin") return;
     loadParticipants();
-    const id = setInterval(loadParticipants, 15000);
+    const id = setInterval(loadParticipants, 3000);
     return () => clearInterval(id);
   }, [screen]);
 
@@ -231,10 +269,16 @@ export default function App() {
     
     const ok = await storeSet(key, record);
     if (!ok) setStorageErr(true);
+    // Notify admin tabs about the new registration
+    try { channelRef.current?.postMessage("participant-update"); } catch {}
     setParticipant(record);
     setLoading(false);
-    if (status === "admitted") setShowStartModal(true);
-    else setScreen("waiting");
+    if (status === "admitted") {
+      setShowStartModal(true);
+      setScreen("startModal");
+    } else {
+      setScreen("waiting");
+    }
   };
 
   const beginQuiz = (record: Participant, resume = false) => {
@@ -245,12 +289,15 @@ export default function App() {
     setAnswers(resume ? record.answers || [] : []);
     setChosen(null);
     setRevealed(false);
+    setShowStartModal(false);
     
     const updated = { ...record, status: "active" as const, startedAt: record.startedAt || new Date().toISOString() };
     setParticipant(updated);
     storeSet(getParticipantKey(record.email), updated);
     setScreen("quiz");
   };
+  // Keep the ref in sync with the latest beginQuiz closure
+  beginQuizRef.current = beginQuiz;
 
   const handleTimeUp = () => {
     setRevealed(true);
@@ -532,6 +579,31 @@ export default function App() {
             </motion.div>
           )}
 
+          {/* Start Modal — quiz is live, user can begin immediately */}
+          {screen === "startModal" && participant && (
+            <motion.div
+              key="startModal"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex flex-col items-center text-center py-20"
+            >
+              <div className="w-24 h-24 bg-emerald-50 text-emerald-600 flex items-center justify-center rounded-[32px] mb-10 shadow-xl shadow-emerald-100">
+                <CheckCircle2 size={48} />
+              </div>
+              <h2 className="text-4xl font-black text-aws-ink mb-4">You're Admitted!</h2>
+              <p className="text-slate-500 text-lg max-w-md mx-auto mb-12">
+                Welcome, <span className="text-aws-ink font-bold">{participant.name.split(' ')[0]}</span>! The arena is live and ready for you.
+              </p>
+              <button
+                className="bg-aws-orange text-aws-ink font-black px-14 py-5 rounded-2xl text-lg shadow-xl shadow-orange-100 hover:shadow-orange-200 active:scale-95 transition-all flex items-center gap-3 group"
+                onClick={() => beginQuiz(participant)}
+              >
+                Begin Quiz Now <ChevronRight size={22} className="group-hover:translate-x-1 transition-transform"/>
+              </button>
+            </motion.div>
+          )}
+
           {/* Waiting Room */}
           {screen === "waiting" && (
             <motion.div 
@@ -560,11 +632,14 @@ export default function App() {
                   </div>
                   <div className="flex justify-between items-center border-b border-slate-50 pb-4">
                     <span className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Status</span>
-                    <StatusBadge status="pending" />
+                    <StatusBadge status={participant?.status || "pending"} />
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Gate Status</span>
-                    <span className="text-rose-500 font-black text-[10px] uppercase tracking-widest flex items-center gap-1.5"><Lock size={12}/> Closed</span>
+                    {adminSettings.quizLive 
+                      ? <span className="text-emerald-600 font-black text-[10px] uppercase tracking-widest flex items-center gap-1.5">● Open</span>
+                      : <span className="text-rose-500 font-black text-[10px] uppercase tracking-widest flex items-center gap-1.5"><Lock size={12}/> Closed</span>
+                    }
                   </div>
                 </div>
               </div>
