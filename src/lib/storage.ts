@@ -1,13 +1,7 @@
-import { AdminSettings } from "../types";
-
-export const PARTICIPANT_PREFIX = "participant:";
-export const ADMIN_KEY = "admin:settings";
-
 /**
  * Check if the Google AI Studio storage API is available.
  * When running locally (e.g. via `npm run dev`), this will be false,
- * and we fall back to localStorage so both quiz and admin panels
- * can share data within the same browser.
+ * and we fall back to localStorage so the quiz can share data within the same browser.
  */
 function hasNativeStorage(): boolean {
   try {
@@ -89,7 +83,4 @@ export function getParticipantKey(email: string): string {
   return PARTICIPANT_PREFIX + email.toLowerCase().trim();
 }
 
-export async function loadAdminSettings(): Promise<AdminSettings> {
-  const s = await storeGet<AdminSettings>(ADMIN_KEY);
-  return s || { quizLive: false };
-}
+export const PARTICIPANT_PREFIX = "participant:";

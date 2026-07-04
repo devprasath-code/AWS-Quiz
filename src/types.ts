@@ -8,10 +8,8 @@ export interface Question {
 export interface Participant {
   name: string;
   email: string;
-  college: string;
-  phone: string;
   registeredAt: string;
-  status: 'pending' | 'admitted' | 'active' | 'completed' | 'terminated';
+  status: 'active' | 'completed' | 'terminated';
   questionIndices: number[];
   currentIndex: number;
   answers: Answer[];
@@ -29,7 +27,3 @@ export interface Answer {
   isCorrect: boolean;
 }
 
-export interface AdminSettings {
-  quizLive: boolean;
-  updatedAt?: string;
-}
