@@ -38,28 +38,26 @@ async function sendToGoogleSheets(participant: Participant) {
     return;
   }
   try {
-    const payload = {
-      name: participant.name,
-      email: participant.email,
-      status: participant.status,
-      score: participant.score,
-      totalQuestions: participant.totalQuestions,
-      registeredAt: participant.registeredAt,
-      completedAt: participant.completedAt || "",
-      terminatedAt: participant.terminatedAt || "",
-      terminatedReason: participant.terminatedReason || ""
-    };
-    
-    // We send using no-cors if the Google Apps Script Web App doesn't return CORS headers,
-    // but URLSearchParams/FormData is the safest way to trigger Apps Script's doPost/doGet.
+    const formData = new URLSearchParams();
+    formData.append("name", participant.name);
+    formData.append("email", participant.email);
+    formData.append("status", participant.status);
+    formData.append("score", String(participant.score));
+    formData.append("totalQuestions", String(participant.totalQuestions));
+    formData.append("registeredAt", participant.registeredAt);
+    formData.append("completedAt", participant.completedAt || "");
+    formData.append("terminatedAt", participant.terminatedAt || "");
+    formData.append("terminatedReason", participant.terminatedReason || "");
+
     await fetch(GOOGLE_SHEETS_URL, {
       method: "POST",
       mode: "no-cors",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/x-www-form-urlencoded"
       },
-      body: JSON.stringify(payload)
+      body: formData.toString()
     });
+    console.log("Sync request dispatched to Google Sheets.");
   } catch (error) {
     console.error("Failed to sync response to Google Sheets:", error);
   }
